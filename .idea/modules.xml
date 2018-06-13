@@ -4,8 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/adapter_basico.iml" filepath="$PROJECT_DIR$/adapter_basico.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\acamacho.GEOTECNOLOGIAS\Desktop\android-clase-2-master\adapter_basico\app\app.iml" filepath="C:\Users\acamacho.GEOTECNOLOGIAS\Desktop\android-clase-2-master\adapter_basico\app\app.iml" />
-      <module fileurl="file://C:\Users\acamacho.GEOTECNOLOGIAS\Desktop\android-clase-2-master\adapter_basico\uitest.iml" filepath="C:\Users\acamacho.GEOTECNOLOGIAS\Desktop\android-clase-2-master\adapter_basico\uitest.iml" />
     </modules>
   </component>
 </project>
