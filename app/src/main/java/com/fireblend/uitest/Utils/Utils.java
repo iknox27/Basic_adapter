@@ -2,6 +2,7 @@ package com.fireblend.uitest.Utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fireblend.uitest.R;
@@ -14,6 +15,7 @@ public class Utils {
 
     Activity context;
     MaterialDialog materialDialog;
+
 
     public Utils(Activity context){
         this.context = context;
@@ -32,6 +34,8 @@ public class Utils {
             materialDialog.dismiss();
         }
     }
+
+
 
 
 

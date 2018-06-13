@@ -1,15 +1,22 @@
 package com.fireblend.uitest.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -24,6 +31,8 @@ import android.widget.Toast;
 import com.fireblend.uitest.R;
 import com.fireblend.uitest.adapter.Contact_Adapter;
 import com.fireblend.uitest.entities.Contact;
+import com.fireblend.uitest.helpers.DataBaseManager;
+import com.fireblend.uitest.helpers.PreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +48,18 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView list;
     Contact_Adapter adapter;
     ArrayList<Contact> contacts;
-
-
+    DataBaseManager dataBaseManager;
+    PreferencesManager preferencesManager;
     //@BindView(R.id.lvError)
     RelativeLayout relativeLayout;
 
 
+    int textSize;
+    String color;
+    int cols;
 
+    @BindView(R.id.pa)
+    RelativeLayout pa;
 
     @Override
     @Optional
@@ -54,14 +68,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+        dataBaseManager = DataBaseManager.getInstance();
+        dataBaseManager.startHelper(getApplicationContext());
+        contacts = dataBaseManager.getContacts();
+        preferencesManager = PreferencesManager.getInstance();
+        textSize = preferencesManager.getIntValue(getApplicationContext(),preferencesManager.ARG_FONTSIZE);
+        color = preferencesManager.getStringValue(getApplicationContext(),preferencesManager.ARG_BACKGROUNDCOLOR);
+        cols = preferencesManager.getIntValue(getApplicationContext(),preferencesManager.ARG_COLUMNS);
 
-        if(savedInstanceState != null){
-            contacts = savedInstanceState.getParcelableArrayList("contacts");
-        }else{
-            contacts = getIntent().getParcelableArrayListExtra("contacts");
+        if(color.equals("")){
+            color = "#fff";
         }
 
+        if(textSize == 1){
+            textSize = 12;
+        }
 
+        pa.setBackgroundColor(Color.parseColor(color));
 
         relativeLayout = (RelativeLayout) findViewById(R.id.lvError);
         list = (RecyclerView)findViewById(R.id.lista_contactos);
@@ -71,75 +94,71 @@ public class MainActivity extends AppCompatActivity {
         list.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         setupList(contacts == null || contacts.size() == 0 ? true: false);
 
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ManageContactActivity.class );
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
+
+
+
     private void setupList(boolean itsEmpty) {
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext()) {
-
-            @Override
-            public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
-                LinearSmoothScroller smoothScroller = new LinearSmoothScroller(getApplicationContext()) {
-
-                    private static final float SPEED = 300f; // la velocidad en que se hace el movimiento
-
-                    @Override
-                    protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-                        return SPEED / displayMetrics.densityDpi;
-                    }
-
-                };
-                smoothScroller.setTargetPosition(position);
-                startSmoothScroll(smoothScroller);
-            }
-
-        };
-
-
-
-
         if(itsEmpty){
-            contacts = new ArrayList();
+            contacts = new ArrayList<Contact>();
             relativeLayout.setVisibility(View.VISIBLE);
             list.setVisibility(View.GONE);
-            //Lista ejemplo con datos estaticos. Normalmente, estos serían recuperados de una BD o un REST API.
-            //contacts.add(new Contact("Sergio", 28, "sergiome@gmail.com", "88854764", "San Jose"));
-            //contacts.add(new Contact("Andres", 1, "alex@gmail.com", "88883644", "San Jose"));
-           // contacts.add(new Contact("Andrea", 2, "andrea@gmail.com", "98714764", "San Jose"));
-           //.add(new Contact("Fabian", 3, "fabian@gmail.com", "12345678", "San Jose"));
-           // contacts.add(new Contact("Ivan", 4, "ivan@gmail.com", "87654321", "San Jose"));
-           // contacts.add(new Contact("Gabriela", 5, "gabriela@gmail.com", "09871234", "San Jose"));
-           // contacts.add(new Contact("Alex", 6, "sergiome@gmail.com", "43215678", "San Jose"));
         }else{
             relativeLayout.setVisibility(View.GONE);
             list.setVisibility(View.VISIBLE);
         }
 
+        //poner el valor de las preferencias
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, cols);
 
-        list.setLayoutManager(layoutManager);
+        list.setLayoutManager(mLayoutManager);
         adapter = new Contact_Adapter(contacts,list,getApplicationContext());
+        adapter.setTextSizes(this.textSize);
+        adapter.setColor(this.color);
         list.setAdapter(adapter);
 
 
     }
 
-    @Optional
-    @OnClick(R.id.goToNext)
-    public void goToAadd(){
-        Intent intent = new Intent(this, ManageContactActivity.class );
-        intent.putParcelableArrayListExtra("contacts",contacts);
-        startActivity(intent);
-        finish();
-    }
+
 
 
     @Override
     public void onSaveInstanceState(Bundle saveState) {
         super.onSaveInstanceState(saveState);
-        saveState.putParcelableArrayList("contacts", (ArrayList<? extends Parcelable>) contacts);
-
+       // saveState.putParcelableArrayList("contacts", (ArrayList<? extends Parcelable>) contacts);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent = new Intent(MainActivity.this, PreferencesActivity.class );
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }

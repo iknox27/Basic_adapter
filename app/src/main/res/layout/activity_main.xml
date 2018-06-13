@@ -3,7 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/pa"
     tools:context="com.fireblend.uitest.ui.MainActivity">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_add"
+        android:tint="#fff"/>
 
     <TextView
         android:id="@+id/titulo"
@@ -13,25 +26,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:id="@+id/contenedor"
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
-        <Button
-            android:id="@+id/goToNext"
-            android:text="@string/agregar_nuevo_contacto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lista_contactos"
         android:numColumns="1"
         android:layout_below="@id/titulo"
-        android:layout_above="@id/contenedor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"/>
@@ -40,9 +41,10 @@
     <RelativeLayout
         android:id="@+id/lvError"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/titulo"
-        android:layout_above="@id/contenedor"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:visibility="gone"
         >
 

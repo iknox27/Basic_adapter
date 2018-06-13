@@ -16,7 +16,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.ManageContactActivity"></activity>
+        <activity android:name=".ui.ManageContactActivity" />
+        <activity
+            android:name=".ui.PreferencesActivity"
+            android:label="Mis Preferencias"
+            />
+        <activity
+            android:name=".ui.DetallesContactoActivity"
+            android:label="Detalles de Contacto"
+            />
     </application>
 
 </manifest>

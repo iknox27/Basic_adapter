@@ -3,6 +3,8 @@
     <string name="agregar_nuevo_contacto">Agregar Nuevo Contacto</string>
     <string name="lista_de_contactos">Lista de Contactos</string>
     <string name="title_activity_add_contact">AddContact</string>
-    <string name="spinner_title" >Provincias</string>
+    <string name="spinner_title">Provincias</string>
     <string name="empty_list">No existen usuarios </string>
+    <string name="choose">Escoger</string>
+    <string name="detalles">Detalles</string>
 </resources>

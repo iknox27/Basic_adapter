@@ -3,51 +3,74 @@ package com.fireblend.uitest.helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.fireblend.uitest.bd.DataBaseHelper;
+
 public class PreferencesManager {
 
     private static SharedPreferences mPreferences;
     private static final String PREF_FILE = "app.preferences";
-    private static final String ARG_USERNAME = "arg.username";
-    private static final String ARG_PASSWORD = "arg.password";
-    private static final String ARG_REMEMBER = "arg.remember";
+    public String ARG_FONTSIZE = "arg.fontSize";
+    public  String ARG_BACKGROUNDCOLOR = "arg.backgroundColor";
+    public  String ARG_BACKGROUNDCOLOR2 = "arg.backgroundColor2";
+    public String ARG_SHOWHIDE = "arg.remember";
+    public  String ARG_COLUMNS = "arg.cols";
+    private static PreferencesManager singleton = new PreferencesManager( );
 
-    public static void savePreferences(Context ctx, String username,
-                                       String password, boolean remember){
+    private PreferencesManager() { }
+
+    public static PreferencesManager getInstance( ) {
+        if(singleton == null) {
+            singleton = new PreferencesManager();
+        }
+        return singleton;
+    }
+
+
+    public void saveString(Context ctx,String key, String value){
         if(mPreferences == null){
             mPreferences = ctx.getSharedPreferences(PREF_FILE, ctx.MODE_PRIVATE);
         }
-
-
         SharedPreferences.Editor editor = mPreferences.edit();
-
-        editor.putString(ARG_USERNAME, username);
-        editor.putString(ARG_PASSWORD, password);
-        editor.putBoolean(ARG_REMEMBER, remember);
-
+        editor.putString(key, value);
         editor.apply();
     }
 
-    public static String getUsernameFromPreferences(Context ctx){
+    public void saveInt(Context ctx,String key, int value){
         if(mPreferences == null){
             mPreferences = ctx.getSharedPreferences(PREF_FILE, ctx.MODE_PRIVATE);
         }
-
-        return mPreferences.getString(ARG_USERNAME, "");
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putInt(key, value);
+        editor.apply();
     }
 
-    public static String getPasswordFromPreferences(Context ctx){
+    public void saveBoolean(Context ctx,String key, boolean value){
         if(mPreferences == null){
             mPreferences = ctx.getSharedPreferences(PREF_FILE, ctx.MODE_PRIVATE);
         }
-
-        return mPreferences.getString(ARG_PASSWORD, "");
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putBoolean(key, value);
+        editor.apply();
     }
 
-    public static boolean getRememberFromPreferences(Context ctx){
+    public String getStringValue(Context ctx,String key){
         if(mPreferences == null){
             mPreferences = ctx.getSharedPreferences(PREF_FILE, ctx.MODE_PRIVATE);
         }
+        return mPreferences.getString(key, "");
+    }
 
-        return mPreferences.getBoolean(ARG_REMEMBER, false);
+    public int getIntValue(Context ctx,String key){
+        if(mPreferences == null){
+            mPreferences = ctx.getSharedPreferences(PREF_FILE, ctx.MODE_PRIVATE);
+        }
+        return mPreferences.getInt(key, 1);
+    }
+
+    public static boolean getBoolean(Context ctx,String key){
+        if(mPreferences == null){
+            mPreferences = ctx.getSharedPreferences(PREF_FILE, ctx.MODE_PRIVATE);
+        }
+        return mPreferences.getBoolean(key, false);
     }
 }

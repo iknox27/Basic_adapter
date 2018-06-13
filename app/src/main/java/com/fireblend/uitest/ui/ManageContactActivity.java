@@ -18,6 +18,7 @@ import android.widget.Toolbar;
 import com.fireblend.uitest.R;
 import com.fireblend.uitest.Utils.Utils;
 import com.fireblend.uitest.entities.Contact;
+import com.fireblend.uitest.helpers.DataBaseManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,23 +50,26 @@ public class ManageContactActivity extends AppCompatActivity implements AdapterV
     @BindView(R.id.TextEdad)
     TextView txt;
 
-
+    private final int HOME = 16908332;
     String item;
     ArrayList<Contact> contacts;
     Utils utils;
     private static final long SPLASH_SCREEN_DELAY = 3000;
+    DataBaseManager dataBaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_contact);
         ButterKnife.bind(this);
+        dataBaseManager = DataBaseManager.getInstance();
+        dataBaseManager.startHelper(getApplicationContext());
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         this.setTitle("Agregar Contacto");
         spinner.setOnItemSelectedListener(this);
         crearProvincias();
-        contacts = getIntent().getParcelableArrayListExtra("contacts");
         if(contacts == null)
             contacts = new ArrayList<Contact>();
         utils = new Utils(this);
@@ -78,9 +82,9 @@ public class ManageContactActivity extends AppCompatActivity implements AdapterV
         Log.d("id", String.valueOf(item.getItemId()));
 
         switch (item.getItemId()) {
-            case 16908332:
+            case HOME:
                 Intent i = new Intent(this,MainActivity.class);
-                i.putParcelableArrayListExtra("contacts",contacts);
+                //i.putParcelableArrayListExtra("contacts",contacts);
                 utils.hideProgress();
                 startActivity(i);
                 finish();
@@ -139,9 +143,17 @@ public class ManageContactActivity extends AppCompatActivity implements AdapterV
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
-                    contacts.add(new Contact(name.getText().toString(),age.getProgress(),email.getText().toString(),number.getText().toString(),item));
+
+                    Contact c = new Contact();
+                    c.name = name.getText().toString();
+                    c.email = email.getText().toString();
+                    c.phone = number.getText().toString();
+                    c.provincia = item;
+                    c.age = age.getProgress();
+                    dataBaseManager.saveContact(c);
+
                     Intent i = new Intent(ManageContactActivity.this,MainActivity.class);
-                    i.putParcelableArrayListExtra("contacts",contacts);
+                    //i.putParcelableArrayListExtra("contacts",contacts);
                     startActivity(i);
                     finish();
                 }
