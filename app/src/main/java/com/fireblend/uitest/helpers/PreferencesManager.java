@@ -17,6 +17,7 @@ public class PreferencesManager {
             mPreferences = ctx.getSharedPreferences(PREF_FILE, ctx.MODE_PRIVATE);
         }
 
+
         SharedPreferences.Editor editor = mPreferences.edit();
 
         editor.putString(ARG_USERNAME, username);
