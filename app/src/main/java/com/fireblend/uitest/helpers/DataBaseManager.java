@@ -60,4 +60,16 @@ public class DataBaseManager {
             return false;
         }
     }
+
+    public boolean deleteContact(int id){
+        try {
+            Dao<Contact, Integer> userDao = bdHelper.getUserDao();
+            userDao.deleteById(id);
+            return true;
+        } catch (SQLException e) {
+            Log.e("Create", e.getMessage().toString());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

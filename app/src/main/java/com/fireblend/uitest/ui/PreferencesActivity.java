@@ -54,9 +54,18 @@ public class PreferencesActivity extends AppCompatActivity {
         textSize = preferencesManager.getIntValue(getApplicationContext(),preferencesManager.ARG_FONTSIZE);
         color = preferencesManager.getStringValue(getApplicationContext(),preferencesManager.ARG_BACKGROUNDCOLOR2);
         cheked = preferencesManager.getBoolean(getApplicationContext(),preferencesManager.ARG_SHOWHIDE);
-        txtSize.setText(textSize +"sp");
         backC.setText(color);
         simpleSwitch.setChecked(cheked);
+
+        if(textSize == 1){
+            textSize = 14;
+        }
+
+        if(color.equals("")){
+            backC.setText("Blanco");
+        }
+
+        txtSize.setText(textSize +"sp");
 
     }
 
@@ -106,18 +115,21 @@ public class PreferencesActivity extends AppCompatActivity {
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        switch (id){
-                            case 1 :
-                                methoCaseFont(which);
-                                return true;
-                            case 2:
-                                methoCaseBC(which);
-                                return true;
-                            case 3:
-                                methoCaseCols(which == 0 ? 1 : 2);
-                                return true;
-                            default : return false;
+                        if(which != -1){
+                            switch (id){
+                                case 1 :
+                                    methoCaseFont(which);
+                                    return true;
+                                case 2:
+                                    methoCaseBC(which);
+                                    return true;
+                                case 3:
+                                    methoCaseCols(which == 0 ? 1 : 2);
+                                    return true;
+                                default : return false;
+                            }
                         }
+                        return false;
                     }
                 })
                 .positiveText(R.string.choose)

@@ -139,7 +139,7 @@ public class ManageContactActivity extends AppCompatActivity implements AdapterV
     @OnClick(R.id.addButton)
     public void addNew(){
         if(valdiateFields()){
-            utils.showProgess("Creando Ususario");
+            utils.showProgess("Creando Usuario");
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
@@ -154,6 +154,7 @@ public class ManageContactActivity extends AppCompatActivity implements AdapterV
 
                     Intent i = new Intent(ManageContactActivity.this,MainActivity.class);
                     //i.putParcelableArrayListExtra("contacts",contacts);
+                    utils.hideProgress();
                     startActivity(i);
                     finish();
                 }

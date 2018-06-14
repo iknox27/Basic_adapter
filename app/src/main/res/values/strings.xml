@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tarea 2</string>
+    <string name="app_name">Tarea 3</string>
     <string name="agregar_nuevo_contacto">Agregar Nuevo Contacto</string>
     <string name="lista_de_contactos">Lista de Contactos</string>
     <string name="title_activity_add_contact">AddContact</string>

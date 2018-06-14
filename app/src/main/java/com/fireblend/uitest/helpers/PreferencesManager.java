@@ -67,7 +67,7 @@ public class PreferencesManager {
         return mPreferences.getInt(key, 1);
     }
 
-    public static boolean getBoolean(Context ctx,String key){
+    public  boolean getBoolean(Context ctx,String key){
         if(mPreferences == null){
             mPreferences = ctx.getSharedPreferences(PREF_FILE, ctx.MODE_PRIVATE);
         }

@@ -77,11 +77,11 @@ public class MainActivity extends AppCompatActivity {
         cols = preferencesManager.getIntValue(getApplicationContext(),preferencesManager.ARG_COLUMNS);
 
         if(color.equals("")){
-            color = "#fff";
+            color = "#ffffff";
         }
 
         if(textSize == 1){
-            textSize = 12;
+            textSize = 14;
         }
 
         pa.setBackgroundColor(Color.parseColor(color));
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, cols);
 
         list.setLayoutManager(mLayoutManager);
-        adapter = new Contact_Adapter(contacts,list,getApplicationContext());
+        adapter = new Contact_Adapter(contacts,list,getApplicationContext(),this);
         adapter.setTextSizes(this.textSize);
         adapter.setColor(this.color);
         list.setAdapter(adapter);

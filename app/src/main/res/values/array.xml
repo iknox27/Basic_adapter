@@ -9,7 +9,7 @@
     </string-array>
 
     <string-array name="colorshex">
-        <item>#fff</item>
+        <item>#ffffff</item>
         <item>#ff9999</item>
         <item>#FFFFE0</item>
         <item>#ADD8E6</item>
